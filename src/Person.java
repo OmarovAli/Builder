@@ -1,13 +1,17 @@
 import java.util.OptionalInt;
 
 public class Person {
-    protected final String name;
-    protected final String surname;
-    protected int age;
-    protected String address;
+    private final String name;
+    private final String surname;
+    private int age;
+    private String address;
 
 
-    public Person() {
+    public Person(String name, String surname, int age, String address) {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.address = address;
     }
 
 
@@ -31,7 +35,6 @@ public class Person {
     public String getName() {
     return name;
     }
-
     public String getSurname() {
         return surname;
     }
@@ -39,30 +42,34 @@ public class Person {
     public OptionalInt getAge() {
         return OptionalInt.of(age);
     }
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     public String getAddress() {
         return address;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public String happyBirthday(int age) {
+    public void happyBirthday(int age) {
         if (age == 0) {
             age++;
         }
-
-        @Override
-        public String toString() {
-            return String.format(
-                    "Person:\t\t%d\nName:\t\t%s\nSurname:\t%s\nage:\t%s\naddress"
-                    , age, name, surname, address);
-        }
+    }
+    public String toString() {
+        StringBuilder builder= new StringBuilder();
+        builder.append("Person [Имя=").append(name).append(", Фамилия=").append(surname).append(", возраст=").append(age).append(", место жительств=").append(address);
+        return builder.toString();
     }
         @Override
         public int hashCode () {
-
+            int prime = 31;
+            int result = 17;
+            result = prime * result + (name != null ? name.hashCode() : 0);
+            result = prime * result + (surname != null ? surname.hashCode() : 0);
+            return result;
         }
 
         public PersonBuilder newChildBuilder () {
@@ -73,7 +80,10 @@ public class Person {
             return child;
         }
 
-
+        public boolean isValid() {
+        return  (name != null && !name.trim().isEmpty()) && (surname != null && !surname.trim().isEmpty())
+                    && (age != 0 && age > 0) && (address != null && !address.trim().isEmpty());
+        }
 
     }
-}
+
